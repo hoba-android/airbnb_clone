@@ -6,15 +6,16 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
 
+import Router from "./ExploreNavigator";
+
 import HomeScreen from "../screens/home";
-import Search from "../screens/Search";
 
 const HomeTabNavigator = () => {
   return (
     <Tab.Navigator tabBarOptions={{ activeTintColor: "red" }}>
       <Tab.Screen
-        name="Home"
-        component={HomeScreen}
+        name="Explore"
+        component={Router}
         options={{
           tabBarLabel: "Explore",
           tabBarIcon: ({ color, size }) => (
