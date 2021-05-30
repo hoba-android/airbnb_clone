@@ -11,8 +11,9 @@ import {
 import locations from "../../../assets/data/search";
 import { useNavigation } from "@react-navigation/native";
 
-import { Ionicons } from "@expo/vector-icons";
-import { Entypo } from "@expo/vector-icons";
+import SuggestionRow from "./SuggetionRow";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+const apikey = "AIzaSyDNAFr2EC_uqfyOtKXa0Z5Rs05N-6W2Iv4";
 
 const LocationSerach = () => {
   const [inputText, setInputText] = useState("");
@@ -21,33 +22,24 @@ const LocationSerach = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.inputView}>
-        <Ionicons name="ios-search" size={24} color="black" />
-        <TextInput
-          style={styles.textInput}
-          placeholder="Where are you going?"
-          value={inputText}
-          onChangeText={setInputText}
+      <View style={{ height: 500, width: 500 }}>
+        <GooglePlacesAutocomplete
+          placeholder="Search"
+          onPress={(data, details = null) => {
+            // 'details' is provided when fetchDetails = true
+            navigation.navigate("Guests");
+            console.log(data, details);
+          }}
+          renderRow={(item) => (
+            <SuggestionRow item={item} navigation={navigation} />
+          )}
+          query={{
+            key: apikey,
+            language: "en",
+            types: "(cities)",
+          }}
         />
       </View>
-
-      <FlatList
-        data={locations}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => {
-          return (
-            <Pressable
-              style={styles.row}
-              onPress={() => navigation.navigate("Guests")}
-            >
-              <View style={styles.locationCont}>
-                <Entypo name="location-pin" size={30} color="black" />
-              </View>
-              <Text>{item.description}</Text>
-            </Pressable>
-          );
-        }}
-      />
     </View>
   );
 };
@@ -79,11 +71,5 @@ const styles = StyleSheet.create({
     borderBottomColor: "lightgrey",
     borderBottomWidth: 1,
     alignItems: "center",
-  },
-  locationCont: {
-    backgroundColor: "lightgrey",
-    padding: 6,
-    marginRight: 10,
-    borderRadius: 10,
   },
 });
